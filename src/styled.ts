@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const LabelInputWrapper = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ export const Input = styled.input`
   font-size: inherit;
 `;
 
-export const Button = styled.button`
+export const buttonStyles = css`
   padding: 0.75rem;
   background-color: ${(p) => p.theme.colors.primary};
   color: ${(p) => p.theme.colors.primaryText};
@@ -25,4 +25,8 @@ export const Button = styled.button`
   cursor: pointer;
   width: 100%;
   font-size: inherit;
+`;
+
+export const Button = styled.button`
+  ${buttonStyles}
 `;

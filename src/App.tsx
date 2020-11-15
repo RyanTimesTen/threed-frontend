@@ -7,7 +7,8 @@ import { Account } from './Account';
 import { UserIcon } from './UserIcon';
 import { HomeIcon } from './HomeIcon';
 import { routes } from './routes';
-import { Header } from './styled';
+import { Header, buttonStyles } from './styled';
+import { useUser } from './User';
 
 function Threads() {
   const [{ fetching, data, error }] = useQuery({
@@ -36,18 +37,33 @@ const Nav = styled.nav`
   padding: 1.25rem 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+`;
+
+const Link = styled(BaseLink)`
+  ${buttonStyles}
+  max-width: 100px;
+  padding: 0.5rem;
+  text-decoration: none;
+  text-align: center;
 `;
 
 function App() {
+  const { user } = useUser();
+
   return (
     <Router>
       <Nav>
         <BaseLink to={routes.home}>
           <HomeIcon />
         </BaseLink>
-        <BaseLink to={routes.account}>
-          <UserIcon />
-        </BaseLink>
+        {user ? (
+          <BaseLink to={routes.account}>
+            <UserIcon />
+          </BaseLink>
+        ) : (
+          <Link to={routes.account}>Sign In</Link>
+        )}
       </Nav>
       <Routes>
         <Route path={routes.home} element={<Threads />} />

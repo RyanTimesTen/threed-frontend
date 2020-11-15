@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useQuery } from 'urql';
 import { AuthForm } from './AuthForm';
 import { LabelInputWrapper, Header, Input, Button } from './styled';
+import { useUser } from './User';
 
 const AccountInfo = styled.div`
   ${LabelInputWrapper} {
@@ -11,41 +11,30 @@ const AccountInfo = styled.div`
 `;
 
 export function Account() {
-  const [{ fetching, data }, refetchMe] = useQuery({
-    query: `
-      {
-        me {
-          id
-          avatar
-          createdAt
-          username
-        }
-      } 
-    `,
-  });
+  const { fetching, user, refetch } = useUser();
 
   function handleLogout() {
     localStorage.removeItem('token');
-    refetchMe({ requestPolicy: 'network-only' });
+    refetch({ requestPolicy: 'network-only' });
   }
 
   function handleSuccess(token: string) {
     localStorage.setItem('token', token);
-    refetchMe({ requestPolicy: 'network-only' });
+    refetch({ requestPolicy: 'network-only' });
   }
 
   if (fetching) {
     return <p>loading</p>;
   }
 
-  if (data?.me) {
+  if (user) {
     return (
       <>
         <Header>Account</Header>
         <AccountInfo>
           <LabelInputWrapper>
             <label htmlFor="username">Username</label>
-            <Input id="username" type="text" disabled value={data.me.username} />
+            <Input id="username" type="text" disabled value={user.username} />
           </LabelInputWrapper>
           <Button onClick={handleLogout}>Logout</Button>
         </AccountInfo>
