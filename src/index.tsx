@@ -5,6 +5,7 @@ import { createGlobalStyle, DefaultTheme, ThemeProvider } from 'styled-component
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { UserProvider } from './User';
 
 const client = createClient({
   url: 'https://threed-test-api.herokuapp.com/graphql',
@@ -19,8 +20,8 @@ export const darkTheme: DefaultTheme = {
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: ${(p) => p.theme.colors.background};
-    color: ${(p) => p.theme.colors.text};
+    background-color: ${(p) => (p.theme as any).colors.background};
+    color: ${(p) => (p.theme as any).colors.text};
 
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -36,8 +37,10 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider value={client}>
       <ThemeProvider theme={darkTheme}>
-        <GlobalStyle />
-        <App />
+        <UserProvider>
+          <GlobalStyle />
+          <App />
+        </UserProvider>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
