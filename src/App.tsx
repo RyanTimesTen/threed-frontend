@@ -1,25 +1,51 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useQuery } from 'urql';
+import { BrowserRouter as Router, Link as BaseLink, Route, Routes } from 'react-router-dom';
+import styled from 'styled-components';
+
+function Threads() {
+  const [{ fetching, data, error }] = useQuery({
+    query: `
+      {
+        threads(sortBy: LATEST) {
+          id
+          title
+          likesNumber
+        }
+      } 
+    `,
+  });
+
+  return (
+    <div>
+      {fetching && <p>loading</p>}
+      {error && <p>something went wrong</p>}
+      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+    </div>
+  );
+}
+
+function SignUp() {
+  return <p>signup page</p>;
+}
+
+const Link = styled(BaseLink)`
+  text-decoration: none;
+  color: inherit;
+`;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/signup">Sign Up</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Threads />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </Router>
   );
 }
 
