@@ -9,12 +9,22 @@ import { UserProvider } from './User';
 
 const client = createClient({
   url: 'https://threed-test-api.herokuapp.com/graphql',
+  fetchOptions: () => {
+    const token = localStorage.getItem('token');
+    return {
+      headers: {
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    };
+  },
 });
 
 export const darkTheme: DefaultTheme = {
   colors: {
     background: '#212429',
     text: '#ffffff',
+    primary: '#96ffed',
+    primaryText: '#000000',
   },
 };
 
@@ -30,7 +40,12 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 1rem;
-    }
+    box-sizing: border-box;
+    font-size: 1.125rem;
+
+    margin: 0 auto;
+    max-width: 90%;
+  }
 `;
 
 ReactDOM.render(
