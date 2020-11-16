@@ -8,15 +8,20 @@ const AuthModeButton = styled.button`
   background-color: inherit;
   color: inherit;
   border: none;
+  width: 100%;
 `;
 
 const Form = styled.form`
-  ${Input} {
-    margin-bottom: 1.25rem;
+  > * {
+    margin-bottom: 1.5rem;
   }
 
   ${Button} {
-    margin-top: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  :last-child {
+    margin-bottom: 0;
   }
 `;
 
@@ -85,6 +90,10 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
           />
         </LabelInputWrapper>
 
+        <Button type="submit" disabled={signinFetching || signupFetching}>
+          {authMode === 'signin' ? 'Sign In' : 'Sign Up'}
+        </Button>
+
         <AuthModeButton
           type="button"
           onClick={() => setAuthMode((mode) => (mode === 'signin' ? 'signup' : 'signin'))}
@@ -93,10 +102,6 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
             ? "Don't have an account yet? Click here"
             : 'Already have an account? Click here'}
         </AuthModeButton>
-
-        <Button type="submit" disabled={signinFetching || signupFetching}>
-          {authMode === 'signin' ? 'Sign In' : 'Sign Up'}
-        </Button>
       </Form>
     </>
   );

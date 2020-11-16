@@ -25,9 +25,9 @@ function Threads() {
 
   return (
     <div>
+      <Header>Threads</Header>
       {fetching && <p>loading</p>}
       {error && <p>something went wrong</p>}
-      <Header>Threads</Header>
       {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
     </div>
   );
