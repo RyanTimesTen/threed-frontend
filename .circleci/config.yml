@@ -2,6 +2,10 @@ version: 2.1
 
 # Define the jobs we want to run for this project
 jobs:
+  install:
+    steps:
+      - checkout
+      - run: yarn
   build:
     docker:
       - image: circleci/node:latest
@@ -11,6 +15,8 @@ jobs:
     steps:
       - checkout
       - run: yarn build
+    requires:
+      - install
   test:
     docker:
       - image: circleci/node:latest
