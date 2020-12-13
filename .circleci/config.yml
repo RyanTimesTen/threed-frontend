@@ -20,8 +20,6 @@ jobs:
     steps:
       - checkout
       - run: yarn build
-    requires:
-      - install
   test:
     docker:
       - image: circleci/node:latest
@@ -36,5 +34,7 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - build
+      - build:
+          requires:
+            - install
       - test
