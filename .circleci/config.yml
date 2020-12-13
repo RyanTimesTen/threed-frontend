@@ -20,22 +20,12 @@ jobs:
     steps:
       - checkout
       - run: yarn build
-  test:
-    docker:
-      - image: circleci/node:latest
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD
-    steps:
-      - checkout
-      - run: echo "this is the test job"
 
 # Orchestrate our job run sequence
 workflows:
-  build_and_test:
+  build:
     jobs:
       - install
       - build:
           requires:
             - install
-      - test
